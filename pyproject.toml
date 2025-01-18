@@ -41,19 +41,13 @@ exclude = ["/.github", "/docs"]
 packages = ["src/pytest_pickle_cache"]
 
 [tool.pytest.ini_options]
-addopts = [
-    "--doctest-modules",
-    "--cov=pytest_pickle_cache",
-    "--cov-report=lcov:lcov.info",
-]
-doctest_optionflags = ["NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]
-filterwarnings = []
+addopts = ["--cov=pytest_pickle_cache", "--cov-report=lcov:lcov.info"]
 
 [tool.coverage.run]
 disable_warnings = ["module-not-measured"]
 
 [tool.coverage.report]
-exclude_lines = ["no cov", "raise NotImplementedError", "if TYPE_CHECKING:"]
+exclude_lines = ["if TYPE_CHECKING:"]
 skip_covered = true
 
 [tool.ruff]
