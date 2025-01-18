@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import binascii
 import pickle
 from typing import TYPE_CHECKING
 
@@ -21,8 +22,11 @@ def use_cache(request: pytest.FixtureRequest) -> Callable[[str, Callable], Any]:
     """
 
     def use_cache(key: str, create: Callable[[], object]) -> Any:
-        if value := request.config.cache.get(key, None):
-            return pickle.loads(base64.b64decode(value))  # noqa: S301
+        try:
+            if value := request.config.cache.get(key, None):
+                return pickle.loads(base64.b64decode(value))
+        except (pickle.UnpicklingError, binascii.Error):
+            request.config.cache.set(key, None)
 
         obj = create()
         value = base64.b64encode(pickle.dumps(obj)).decode("utf-8")
