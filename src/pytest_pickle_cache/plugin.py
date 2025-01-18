@@ -21,7 +21,18 @@ def use_cache(request: pytest.FixtureRequest) -> Callable[[str, Callable], Any]:
     and deserialized using pickle and base64 encoding.
     """
 
-    def use_cache(key: str, create: Callable[[], object]) -> Any:
+    def use_cache(key: str, create: Callable[[], Any]) -> Any:
+        """Retrieve a cached result or execute the function if not cached.
+
+        Args:
+            key (str): The key to identify the cached result.
+            func (Callable[[], Any]): The function to execute if the result is
+                not cached. The result of the function is serialized and stored
+                in the cache for future use.
+
+        Returns:
+            Any: The cached result or the result of the executed function.
+        """
         try:
             if value := request.config.cache.get(key, None):
                 return pickle.loads(base64.b64decode(value))
