@@ -104,7 +104,7 @@ def df(use_cache, request):
     return use_cache(f"key_{request.param}", lambda: create(request.param))
 ```
 
-## Benefits of this Example
+## Benefits
 
 - **Efficiency in Testing**: By using `pytest-pickle-cache`, you can avoid running
 the same test multiple times, reducing the overall test execution time.
