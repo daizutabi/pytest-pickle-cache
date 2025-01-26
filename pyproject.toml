@@ -5,10 +5,10 @@ build-backend = "hatchling.build"
 [project]
 name = "pytest-pickle-cache"
 version = "0.1.2"
-authors = [{ name = "daizutabi", email = "daizutabi@gmail.com" }]
 description = "A pytest plugin for caching test results using pickle."
 readme = "README.md"
 license = { file = "LICENSE" }
+authors = [{ name = "daizutabi", email = "daizutabi@gmail.com" }]
 classifiers = [
     "Framework :: Pytest",
     "Intended Audience :: Developers",
