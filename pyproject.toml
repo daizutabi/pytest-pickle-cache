@@ -31,20 +31,11 @@ Issues = "https://github.com/daizutabi/pytest-pickle-cache/issues"
 [project.entry-points.pytest11]
 pickle_cache = "pytest_pickle_cache.plugin"
 
-[tool.uv]
-dev-dependencies = ["pandas>=2", "pytest-cov>=6.0"]
-
-[tool.hatch.build.targets.sdist]
-exclude = ["/.github", "/docs"]
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/pytest_pickle_cache"]
+[dependency-groups]
+dev = ["pandas>=2", "pytest-cov>=6.0"]
 
 [tool.pytest.ini_options]
 addopts = ["--cov=pytest_pickle_cache", "--cov-report=lcov:lcov.info"]
-
-[tool.coverage.run]
-disable_warnings = ["module-not-measured"]
 
 [tool.coverage.report]
 exclude_lines = ["if TYPE_CHECKING:"]
