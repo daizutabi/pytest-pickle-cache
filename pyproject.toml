@@ -50,3 +50,6 @@ unfixable = ["F401"]
 
 [tool.pyright]
 include = ["src", "tests"]
+strictDictionaryInference = true
+strictListInference = true
+strictSetInference = true
