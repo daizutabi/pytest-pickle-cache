@@ -3,17 +3,17 @@ from __future__ import annotations
 import base64
 import binascii
 import pickle
-from typing import TYPE_CHECKING
+from collections.abc import Callable
+from typing import TypeAlias, TypeVar
 
 import pytest
 
-if TYPE_CHECKING:
-    from collections.abc import Callable
-    from typing import Any
+T = TypeVar("T")
+UseCache: TypeAlias = Callable[[str, Callable[[], T]], T]
 
 
 @pytest.fixture(scope="session")
-def use_cache(request: pytest.FixtureRequest) -> Callable[[str, Callable], Any]:
+def use_cache(request: pytest.FixtureRequest) -> UseCache[T]:
     """A pytest fixture to use cache.
 
     This fixture provides a caching mechanism for pytest, allowing you to
@@ -21,21 +21,22 @@ def use_cache(request: pytest.FixtureRequest) -> Callable[[str, Callable], Any]:
     and deserialized using pickle and base64 encoding.
     """
 
-    def use_cache(key: str, create: Callable[[], Any]) -> Any:
+    def use_cache(key: str, create: Callable[[], T]) -> T:
         """Retrieve a cached result or execute the function if not cached.
 
         Args:
             key (str): The key to identify the cached result.
-            func (Callable[[], Any]): The function to execute if the result is
+            create (Callable[[], T]): The function to execute if the result is
                 not cached. The result of the function is serialized and stored
                 in the cache for future use.
 
         Returns:
-            Any: The cached result or the result of the executed function.
+            T: The cached result or the result of the executed function.
+
         """
         try:
-            if value := request.config.cache.get(key, None):
-                return pickle.loads(base64.b64decode(value))
+            if value := request.config.cache.get(key, None):  # pyright: ignore[reportUnknownMemberType, reportUnknownVariableType]
+                return pickle.loads(base64.b64decode(value))  # pyright: ignore[reportUnknownArgumentType]
         except (pickle.UnpicklingError, binascii.Error):
             request.config.cache.set(key, None)
 

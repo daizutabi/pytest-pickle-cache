@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build"]
+build-backend = "uv_build"
 
 [project]
 name = "pytest-pickle-cache"
@@ -10,18 +10,21 @@ readme = "README.md"
 license = { file = "LICENSE" }
 authors = [{ name = "daizutabi", email = "daizutabi@gmail.com" }]
 classifiers = [
+  "Development Status :: 4 - Beta",
   "Framework :: Pytest",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: MIT License",
-  "Topic :: Software Development :: Testing",
-  "Programming Language :: Python",
+  "Operating System :: OS Independent",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python",
+  "Topic :: Software Development :: Testing",
 ]
 requires-python = ">=3.10"
-dependencies = ["pytest>=7"]
+dependencies = ["pytest>=9"]
 
 [project.urls]
 Documentation = "https://github.com/daizutabi/pytest-pickle-cache"
@@ -32,9 +35,16 @@ Issues = "https://github.com/daizutabi/pytest-pickle-cache/issues"
 pickle_cache = "pytest_pickle_cache.plugin"
 
 [dependency-groups]
-dev = ["pandas>=2", "pytest-cov>=6.0"]
+dev = [
+  "basedpyright>=1.37.4",
+  "pandas>=2",
+  "pandas-stubs>=3.0.0.260204",
+  "prek>=0.3.1",
+  "pytest-cov>=6.0",
+  "ruff>=0.15.0",
+]
 
-[tool.pytest.ini_options]
+[tool.pytest]
 addopts = ["--cov=pytest_pickle_cache", "--cov-report=lcov:lcov.info"]
 
 [tool.coverage.report]
@@ -43,13 +53,32 @@ skip_covered = true
 
 [tool.ruff]
 line-length = 88
-target-version = "py311"
+target-version = "py310"
 
 [tool.ruff.lint]
+preview = true
+select = ["ALL"]
 unfixable = ["F401"]
+ignore = [
+  "CPY001",
+  "D100",
+  "D104",
+  "D203",
+  "D213",
+  "D401",
+  "DOC201",
+  "S301",
+  "S403",
+]
 
-[tool.pyright]
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ANN", "ARG", "D", "PLC2701", "PLR2004", "PT011", "S", "SLF001"]
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]
+
+[tool.basedpyright]
 include = ["src", "tests"]
-strictDictionaryInference = true
-strictListInference = true
-strictSetInference = true
+reportAny = false
+reportExplicitAny = false
+reportUnusedCallResult = false
