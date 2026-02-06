@@ -7,7 +7,7 @@ import time
 from typing import TYPE_CHECKING
 
 import pytest
-from pandas import DataFrame
+from pandas import DataFrame  # pyright: ignore[reportMissingTypeStubs]
 
 if TYPE_CHECKING:
     from pytest_pickle_cache import UseCache
